@@ -1,0 +1,18 @@
+{
+  "name": "piarch-a-locations",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "./node_modules/.bin/babel-node index.js"
+  },
+  "dependencies": {
+    "express": "~4.16.0",
+    "mongojs": "^2.5.0",
+    "nanomsg": "^4.0.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1"
+  }
+}
