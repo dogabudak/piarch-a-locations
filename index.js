@@ -8,18 +8,19 @@ const express = require('express'),
 
 app.get('/cityList/:country', async (req, res) => {
     try {
-      const list =  { cities: config.availableCities }
-      //TODO get it from DB
-      res.send(list);
+        const country = req.params.country
+        const list = {cities: config.availableCities[country]}
+        //TODO get it from DB
+        res.send(list);
     } catch (err) {
         res.send(400)
     }
 });
 app.get('/coordinates/:city', async (req, res) => {
     try {
-      const list =  { cities: config.availableCities }
-      //TODO get it from DB
-      res.send(list);
+        //TODO get it from DB
+        const list = {coordinates: config.coordinates[req.params.city]}
+        res.send(list);
     } catch (err) {
         res.send(400)
     }
@@ -27,8 +28,8 @@ app.get('/coordinates/:city', async (req, res) => {
 
 app.get('/countryList', async (req, res) => {
     try {
-      //TODO get it from DB
-      res.send({ cities: config.featuredCities });
+        //TODO get it from DB
+        res.send({cities: config.featuredCities});
     } catch (err) {
         res.send(400)
     }
@@ -36,7 +37,7 @@ app.get('/countryList', async (req, res) => {
 app.get('/featuredList', async (req, res) => {
     try {
         //TODO get it from DB
-        res.send({ cities: config.featuredCities });
+        res.send({cities: config.featuredCities});
     } catch (err) {
         res.send(400)
     }
