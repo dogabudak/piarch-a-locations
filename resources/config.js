@@ -4,7 +4,7 @@ module.exports = {
         germany: ['Munich']
     },
     featuredCities: ['Amsterdam'],
-    coordinates: {istanbul: [{name :'ayasofya', x: 41.008545, y: 28.9770532}]},
+    coordinates: {istanbul: [{name :'ayasofya', x: 41.008545, y: 28.9770532 , type:'church'}]},
     mongo: {
         url: 'mongodb://localhost:27017/users'
     }
