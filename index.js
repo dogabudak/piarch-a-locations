@@ -29,7 +29,7 @@ app.get('/coordinates/:city', async (req, res) => {
 app.get('/countryList', async (req, res) => {
     try {
         //TODO get it from DB
-        res.send({cities: config.featuredCities});
+        res.send({countries: Object.keys(config.availableCities)});
     } catch (err) {
         res.send(400)
     }
