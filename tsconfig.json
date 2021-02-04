@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "lib": ["es2015"],
+    "resolveJsonModule": true,
+    "sourceMap": true
+  },
+  "include": ["./resources/**/*"],
+  "exclude": [
+    "node_modules"
+  ]
+}

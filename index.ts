@@ -1,12 +1,13 @@
-const express = require('express'),
-    app = express(),
-    config = require('./resources/config'),
-    mongojs = require('mongojs'),
-    db = mongojs(config.mongo.url, ['users']),
-    nano = require('nanomsg'),
-    nanoReq = nano.socket('req');
+import * as express from 'express';
+import * as mongojs from 'mongojs';
+import * as nano from 'nanomsg';
+import * as config from './resources/config.json';
 
-app.get('/cityList/:country', async (req, res) => {
+const nanoReq = nano.socket('req');
+const app = express();
+//TODO this is wrong db
+const db = mongojs(config.mongo.url, ['users']);
+app.get('/cityList/:country', (req, res) => {
     try {
         const country = req.params.country
         const list = {cities: config.availableCities[country]}
@@ -16,7 +17,7 @@ app.get('/cityList/:country', async (req, res) => {
         res.send(400)
     }
 });
-app.get('/coordinates/:city', async (req, res) => {
+app.get('/coordinates/:city', (req, res) => {
     try {
         //TODO get it from DB
         const list = {coordinates: config.coordinates[req.params.city]}
@@ -26,7 +27,7 @@ app.get('/coordinates/:city', async (req, res) => {
     }
 });
 
-app.get('/countryList', async (req, res) => {
+app.get('/countryList', (req, res) => {
     try {
         //TODO get it from DB
         res.send({countries: Object.keys(config.availableCities)});
@@ -34,7 +35,7 @@ app.get('/countryList', async (req, res) => {
         res.send(400)
     }
 });
-app.get('/featuredList', async (req, res) => {
+app.get('/featuredList', (req, res) => {
     try {
         //TODO get it from DB
         res.send({cities: config.featuredCities});
@@ -47,6 +48,7 @@ app.get('/featuredList', async (req, res) => {
 app.listen(3019);
 
 //TODO use this token checks
+/*
 function tokenCheck(request) {
     return new Promise((resolve, reject) => {
         let body = request.body;
@@ -61,3 +63,4 @@ function tokenCheck(request) {
         });
     })
 }
+ */
