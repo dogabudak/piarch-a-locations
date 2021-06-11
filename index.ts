@@ -1,51 +1,61 @@
 import * as express from 'express';
-import * as mongojs from 'mongojs';
-import * as nano from 'nanomsg';
+import { connect } from "./src/database";
 import * as config from './resources/config.json';
 
-const nanoReq = nano.socket('req');
 const app = express();
-//TODO this is wrong db
-const db = mongojs(config.mongo.url, ['users']);
-app.get('/cityList/:country', (req, res) => {
+const db = connect();
+
+app.get('/countryList', async (req, res) => {
+    try {
+        //TODO why do you need to ignore this ?
+        // @ts-ignore
+        const cityList = await db.LocationModel.find({availability:'available'})
+        const countries = cityList.map((eachLocation) => eachLocation.country)
+        res.send({countries});
+    } catch (err) {
+        res.send(400)
+    }
+});
+app.get('/cityList/:country', async (req, res) => {
     try {
         const country = req.params.country
-        const list = {cities: config.availableCities[country]}
-        //TODO get it from DB
-        res.send(list);
+        // TODO why do you need to ignore this ?
+        // @ts-ignore
+        const cityList = await db.LocationModel.findOne({availability:'available', country })
+        res.send(cityList);
     } catch (err) {
         res.send(400)
     }
 });
-app.get('/coordinates/:city', (req, res) => {
+app.get('/featuredList', async (req, res) => {
     try {
-        //TODO get it from DB
-        const list = {coordinates: config.coordinates[req.params.city]}
-        res.send(list);
+        //TODO why do you need to ignore this ?
+        // @ts-ignore
+        const cityList = await db.LocationModel.find({"availability" : "featured"})
+        const countries = cityList.map((eachLocation) => eachLocation.country)
+        res.send({countries});
+    } catch (err) {
+        res.send(400)
+    }
+});
+app.get('/coordinates/:city', async (req, res) => {
+    try {
+        const city = req.params.city
+        const stream = await db.CoordinateModel.findOne({ city }).cursor()
+        res.setHeader('Content-Type', 'application/json');
+        stream.on('data', (doc) =>{
+            res.write(JSON.stringify(doc));
+        });
+        stream.on('end', ()=> {
+            res.end();
+        });
     } catch (err) {
         res.send(400)
     }
 });
 
-app.get('/countryList', (req, res) => {
-    try {
-        //TODO get it from DB
-        res.send({countries: Object.keys(config.availableCities)});
-    } catch (err) {
-        res.send(400)
-    }
-});
-app.get('/featuredList', (req, res) => {
-    try {
-        //TODO get it from DB
-        res.send({cities: config.featuredCities});
-    } catch (err) {
-        res.send(400)
-    }
-});
 
-//TODO get it from config
-app.listen(3019);
+app.listen(config.port);
 
 //TODO use this token checks
 /*

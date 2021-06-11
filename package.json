@@ -7,9 +7,9 @@
   },
   "dependencies": {
     "@types/node": "14.14.27",
-    "express": "~4.16.0",
-    "mongojs": "^2.5.0",
-    "nanomsg": "^4.0.2"
+    "express": "4.16.0",
+    "mongoose": "5.12.13",
+    "nanomsg": "4.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
