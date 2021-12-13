@@ -18,7 +18,7 @@ app.get('/countryList', async (req, res) => {
 });
 app.get('/cityList/:country', async (req, res) => {
     try {
-        const country = req.params.country
+        const {country} = req.params
         // TODO why do you need to ignore this ?
         // @ts-ignore
         const cityList = await db.LocationModel.findOne({availability:'available', country })
@@ -40,7 +40,7 @@ app.get('/featuredList', async (req, res) => {
 });
 app.get('/coordinates/:city', async (req, res) => {
     try {
-        const city = req.params.city
+        const {city} = req.params
         const stream = await db.CoordinateModel.findOne({ city }).cursor()
         res.setHeader('Content-Type', 'application/json');
         stream.on('data', (doc) =>{
