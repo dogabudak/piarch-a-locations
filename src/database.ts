@@ -1,6 +1,5 @@
 import * as Mongoose from 'mongoose';
 import { LocationModel } from '../models/Location';
-import { CoordinateModel } from '../models/Coordinates';
 import * as config from '../resources/config.json';
 
 let database: Mongoose.Connection;
@@ -31,7 +30,6 @@ export const connect = () => {
 
     return {
         LocationModel,
-        CoordinateModel,
     };
 };
 

@@ -1,12 +1,4 @@
 import { Document, Model } from "mongoose";
-enum availability {
-    featured,
-    available
-}
-export interface Location {
-    country: string;
-    cities: string[];
-    availability: availability;
-}
-export interface LocationDocument extends Location, Document {}
+import {Locations} from "piarch-a-interfaces";
+export interface LocationDocument extends Locations, Document {}
 export interface LocationModel extends Model<LocationDocument> {}

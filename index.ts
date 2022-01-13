@@ -1,16 +1,16 @@
 import * as express from 'express';
 import { connect } from "./src/database";
 import * as config from './resources/config.json';
+import {Availability} from "piarch-a-interfaces";
 
 const app = express();
 const db = connect();
-
+// TODO use verification plug-in for the token check as a middleware
+// TODO we should merge countryList and featuredList endpoint 
 app.get('/countryList', async (req, res) => {
     try {
-        //TODO why do you need to ignore this ?
-        // @ts-ignore
-        const cityList = await db.LocationModel.find({availability:'available'})
-        const countries = cityList.map((eachLocation) => eachLocation.country)
+        const locations = await db.LocationModel.find({availability: Availability.available})
+        const countries = locations.map((eachLocation) => eachLocation.countryName)
         res.send({countries});
     } catch (err) {
         res.send(400)
@@ -18,10 +18,9 @@ app.get('/countryList', async (req, res) => {
 });
 app.get('/cityList/:country', async (req, res) => {
     try {
-        const {country} = req.params
-        // TODO why do you need to ignore this ?
-        // @ts-ignore
-        const cityList = await db.LocationModel.findOne({availability:'available', country })
+        const requestedCountry = req.params.country
+        const country = await db.LocationModel.findOne({availability: Availability.available, countryName: requestedCountry })
+        const cityList = country.cities.map((eachCity)=> eachCity.name)
         res.send(cityList);
     } catch (err) {
         res.send(400)
@@ -29,22 +28,23 @@ app.get('/cityList/:country', async (req, res) => {
 });
 app.get('/featuredList', async (req, res) => {
     try {
-        //TODO why do you need to ignore this ?
-        // @ts-ignore
-        const cityList = await db.LocationModel.find({"availability" : "featured"})
-        const countries = cityList.map((eachLocation) => eachLocation.country)
+        const locations = await db.LocationModel.find({availability: Availability.featured})
+        const countries = locations.map((eachLocation) => eachLocation.countryName)
         res.send({countries});
     } catch (err) {
         res.send(400)
     }
 });
+
 app.get('/coordinates/:city', async (req, res) => {
     try {
         const {city} = req.params
-        const stream = await db.CoordinateModel.findOne({ city }).cursor()
+        // return coordinates and tours
+        const stream = await db.LocationModel.findOne({cities: {$elemMatch: {name:city}}}).cursor()
         res.setHeader('Content-Type', 'application/json');
         stream.on('data', (doc) =>{
-            res.write(JSON.stringify(doc));
+            const relatedCity = doc.cities.filter((eachCity)=>eachCity.name === city)[0]
+            res.write(JSON.stringify({coordinates: relatedCity.coordinates, tours: relatedCity.tours }));
         });
         stream.on('end', ()=> {
             res.end();
@@ -56,21 +56,3 @@ app.get('/coordinates/:city', async (req, res) => {
 
 
 app.listen(config.port);
-
-//TODO use this token checks
-/*
-function tokenCheck(request) {
-    return new Promise((resolve, reject) => {
-        let body = request.body;
-        let token = body.token;
-        nanoReq.send('jwt ' + token);
-        nanoReq.on('data', function (buf) {
-            if (buf.toString() === 'true') {
-                resolve()
-            } else {
-                reject()
-            }
-        });
-    })
-}
- */
