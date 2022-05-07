@@ -15,7 +15,7 @@
     "express": "4.16.0",
     "mongoose": "5.12.13",
     "nanomsg": "4.1.0",
-    "piarch-a-interfaces": "git+https://github.com/dogabudak/piarch-a-interfaces.git"
+    "piarch-a-interfaces": "1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

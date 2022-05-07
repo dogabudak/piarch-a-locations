@@ -7,7 +7,7 @@
     "resolveJsonModule": true,
     "sourceMap": true
   },
-  "include": ["./resources/**/*"],
+  "include": ["./resources/**/*", "./src/**/*"],
   "exclude": [
     "node_modules"
   ]
