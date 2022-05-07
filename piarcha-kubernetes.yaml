@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: piarcha-kubernetes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: piarcha_locations
+  template:
+    metadata:
+      labels:
+        app: piarcha_locations
+    spec:
+      containers:
+        - name: piarcha-locations
+          image: piarcha/locations:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3019
+
