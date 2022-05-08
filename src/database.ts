@@ -1,11 +1,10 @@
 import * as Mongoose from 'mongoose';
 import { LocationModel } from '../models/Location';
-import * as config from '../resources/config.json';
 
 let database: Mongoose.Connection;
 
 export const connect = () => {
-    const uri = config.mongo.url;
+    const uri = process.env.MONGODB;
 
     if (database) {
         return;

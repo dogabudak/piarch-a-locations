@@ -1,7 +1,8 @@
 import * as express from 'express';
 import { connect } from "./src/database";
-import * as config from './resources/config.json';
 import {Availability} from "piarch-a-interfaces";
+
+import 'dotenv/config'
 
 const app = express();
 const db = connect();
@@ -55,4 +56,4 @@ app.get('/coordinates/:city', async (req, res) => {
 });
 
 
-app.listen(config.port, '0.0.0.0');
+app.listen(process.env.PORT);

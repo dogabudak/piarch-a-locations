@@ -1,6 +1,0 @@
-{
-    "mongo": {
-        "url": "mongodb+srv://dogabudak:199100@piarkacluster.snpsj.mongodb.net/piarka?retryWrites=true&w=majority"
-    },
-  "port": 3019
-}
