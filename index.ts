@@ -55,4 +55,4 @@ app.get('/coordinates/:city', async (req, res) => {
 });
 
 
-app.listen(config.port);
+app.listen(config.port, '0.0.0.0');
