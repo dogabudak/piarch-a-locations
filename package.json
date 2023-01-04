@@ -17,8 +17,7 @@
     "dotenv": "^16.0.0",
     "express": "4.16.0",
     "mongoose": "5.12.13",
-    "nanomsg": "4.1.0",
-    "piarch-a-interfaces": "1.0.0"
+    "piarch-a-interfaces": "1.0.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

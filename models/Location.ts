@@ -13,6 +13,7 @@ const Locations = new Schema({
       name : { type: String }, //example: "Ayasofya"
       x : { type: Number },
       y : { type: Number },
+      description : { type: String },
       type : { type: AttractionType },
     }],
     tours:[{
