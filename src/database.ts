@@ -3,14 +3,14 @@ import { LocationModel } from '../models/Location';
 
 let database: Mongoose.Connection;
 
-export const connect = () => {
+export const connect = async () => {
     const uri = process.env.MONGODB;
 
     if (database) {
         return;
     }
 
-    Mongoose.connect(uri, {
+    await Mongoose.connect(uri, {
         useNewUrlParser: true,
         useFindAndModify: true,
         useUnifiedTopology: true,

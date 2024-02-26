@@ -6,8 +6,7 @@
   },
   "private": true,
   "scripts": {
-    "start": "node dist/index.js",
-    "postinstall": "tsc",
+    "start": "ts-node index.ts",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
     "deploy": "git add . && git commit -m Heroku && git push heroku master"
@@ -17,7 +16,7 @@
     "dotenv": "^16.0.0",
     "express": "4.16.0",
     "mongoose": "5.13.21",
-    "piarch-a-interfaces": "1.0.5"
+    "piarch-a-interfaces": "1.0.15"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
