@@ -14,6 +14,7 @@ const Locations = new Schema({
       x : { type: Number },
       y : { type: Number },
       description : { type: String },
+      advertisement : { default: false, type: Boolean },
       type : { type: AttractionType },
     }],
     tours:[{
