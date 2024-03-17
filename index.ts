@@ -41,23 +41,39 @@ connect().then(()=>{
 
     app.get('/coordinates/:city', async (req, res) => {
         try {
-            const {city} = req.params
+            const { city, language = 'en'} = req.params
             // return coordinates and tours
-            const stream = await LocationModel.findOne({cities: {$elemMatch: {name:city}}}).cursor()
-            res.setHeader('Content-Type', 'application/json');
-            stream.on('data', (doc) =>{
-                const relatedCity = doc.cities.filter((eachCity)=>eachCity.name === city)[0]
-                res.write(JSON.stringify({coordinates: relatedCity.coordinates, tours: relatedCity.tours }));
-            });
-            stream.on('end', ()=> {
-                res.end();
-            });
+            const result = await LocationModel.aggregate([
+                {
+                    $unwind: "$cities"
+                },
+                {
+                    $match: {
+                        "cities.name": city
+                    }
+                },
+                {
+                    $unwind: "$cities.coordinates"
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        "city": "$cities.name",
+                        "name": "$cities.coordinates.name",
+                        "description": `$cities.coordinates.description.${language}`,
+                        "x": "$cities.coordinates.x",
+                        "y": "$cities.coordinates.y",
+                    }
+                }
+            ]).exec()
+            res.send({coordinates: result});
         } catch (err) {
             res.send(400)
         }
-    });
-
-
+    })
+    app.get('/tours/:city', async (req, res) => {
+        // TODO this should work with the language parameter
+    })
     app.listen(process.env.PORT);
 
 })
