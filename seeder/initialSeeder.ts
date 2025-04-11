@@ -251,6 +251,5 @@ connect().then(async () => {
     )
 }).then(async () => {
     const a = await LocationModel.findOne({})
-    console.log(JSON.stringify(a))
     process.exit(0)
 })
