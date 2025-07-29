@@ -4,29 +4,31 @@ import {Availability} from "piarch-a-interfaces";
 
 import 'dotenv/config'
 import {LocationModel} from "./models/Location";
+import { CountryCityService } from "./src/countryCityService";
 
 const app = express();
 // TODO use verification plug-in for the token check as a middleware
 // TODO we should merge countryList and featuredList endpoint
 
 connect().then(()=>{
+    const countryCityService = CountryCityService.getInstance();
+    
     app.get('/countryList', async (req, res) => {
         try {
-            const locations = await LocationModel.find({availability: Availability.available})
-            const countries = locations.map((eachLocation) => eachLocation.countryName)
-            res.send({countries});
+            const countries = countryCityService.getAllCountries();
+            res.json({countries: countries.map(c => c.name)});
         } catch (err) {
-            res.send(400)
+            res.status(400).json({error: 'Failed to fetch countries'});
         }
     });
+    
     app.get('/cityList/:country', async (req, res) => {
         try {
-            const requestedCountry = req.params.country
-            const country = await LocationModel.findOne({availability: Availability.available, countryName: requestedCountry })
-            const cityList = country.cities.map((eachCity)=> eachCity.name)
-            res.send(cityList);
+            const requestedCountry = req.params.country;
+            const cities = countryCityService.getCitiesByCountryName(requestedCountry);
+            res.json(cities.map(c => c.name));
         } catch (err) {
-            res.send(400)
+            res.status(400).json({error: 'Failed to fetch cities'});
         }
     });
     app.get('/featuredList', async (req, res) => {
@@ -36,6 +38,44 @@ connect().then(()=>{
             res.send({countries});
         } catch (err) {
             res.send(400)
+        }
+    });
+
+    // New standardized endpoints
+    app.get('/countries', async (req, res) => {
+        try {
+            const countries = countryCityService.getAllCountries();
+            res.json(countries);
+        } catch (err) {
+            res.status(400).json({error: 'Failed to fetch countries'});
+        }
+    });
+
+
+
+    app.get('/cities/:countryCode', async (req, res) => {
+        try {
+            const countryCode = req.params.countryCode;
+            const cities = countryCityService.getCitiesByCountry(countryCode);
+            res.json(cities);
+        } catch (err) {
+            res.status(400).json({error: 'Failed to fetch cities'});
+        }
+    });
+
+    app.get('/search/cities', async (req, res) => {
+        try {
+            const query = req.query.q as string;
+            const limit = parseInt(req.query.limit as string) || 10;
+            
+            if (!query) {
+                return res.status(400).json({error: 'Query parameter "q" is required'});
+            }
+            
+            const cities = countryCityService.searchCities(query, limit);
+            res.json(cities);
+        } catch (err) {
+            res.status(400).json({error: 'Failed to search cities'});
         }
     });
 

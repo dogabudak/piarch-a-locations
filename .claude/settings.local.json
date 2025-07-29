@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm cache clean:*)",
+      "Bash(jest:*)",
+      "Bash(sudo chown:*)",
+      "Bash(yarn add:*)",
+      "Bash(rm:*)",
+      "Bash(npx jest:*)",
+      "Bash(npx tsc:*)"
+    ],
+    "deny": []
+  }
+}
