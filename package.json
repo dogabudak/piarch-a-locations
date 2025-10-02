@@ -6,10 +6,7 @@
   },
   "private": true,
   "scripts": {
-    "start": "ts-node index.ts",
-    "watch-node": "nodemon dist/index.js",
-    "watch-ts": "tsc -w",
-    "deploy": "git add . && git commit -m Heroku && git push heroku master"
+    "start": "ts-node index.ts"
   },
   "dependencies": {
     "@types/node": "14.14.27",

@@ -250,6 +250,9 @@ connect().then(async () => {
         ]
     )
 }).then(async () => {
-    const a = await LocationModel.findOne({})
+   const locations = await LocationModel.find({})
     process.exit(0)
+}).catch(err => {
+    console.log(err)
+    process.exit(1)
 })

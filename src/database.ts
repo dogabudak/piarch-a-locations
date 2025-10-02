@@ -4,7 +4,7 @@ import { LocationModel } from '../models/Location';
 let database: Mongoose.Connection;
 
 export const connect = async () => {
-    const uri = process.env.MONGODB;
+    const uri = process.env.MONGODB || 'mongodb://localhost:27017/piarch-locations';
 
     if (database) {
         return;
