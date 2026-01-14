@@ -8,7 +8,6 @@ import { CountryCityService } from "./src/countryCityService";
 
 const app = express();
 // TODO use verification plug-in for the token check as a middleware
-// TODO we should merge countryList and featuredList endpoint
 
 connect().then(()=>{
     const countryCityService = CountryCityService.getInstance();
@@ -16,12 +15,18 @@ connect().then(()=>{
     app.get('/countryList', async (req, res) => {
         try {
             const countries = countryCityService.getAllCountries();
-            res.json({countries: countries.map(c => c.name)});
+            const featuredLocations = await LocationModel.find({availability: Availability.featured});
+            const featuredCountries = featuredLocations.map((eachLocation) => eachLocation.countryName);
+
+            res.json({
+                countries: countries.map(c => c.name),
+                featured: featuredCountries
+            });
         } catch (err) {
             res.status(400).json({error: 'Failed to fetch countries'});
         }
     });
-    
+
     app.get('/cityList/:country', async (req, res) => {
         try {
             const requestedCountry = req.params.country;
@@ -29,15 +34,6 @@ connect().then(()=>{
             res.json(cities.map(c => c.name));
         } catch (err) {
             res.status(400).json({error: 'Failed to fetch cities'});
-        }
-    });
-    app.get('/featuredList', async (req, res) => {
-        try {
-            const locations = await LocationModel.find({availability: Availability.featured})
-            const countries = locations.map((eachLocation) => eachLocation.countryName)
-            res.send({countries});
-        } catch (err) {
-            res.send(400)
         }
     });
 
