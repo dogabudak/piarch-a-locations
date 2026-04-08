@@ -7,6 +7,7 @@ import {LocationModel} from "./models/Location";
 import { CountryCityService } from "./src/countryCityService";
 
 const app = express();
+app.use(express.json());
 // TODO use verification plug-in for the token check as a middleware
 
 connect().then(()=>{
@@ -110,6 +111,73 @@ connect().then(()=>{
     app.get('/tours/:city', async (req, res) => {
         // TODO this should work with the language parameter
     })
+
+    app.post('/generate-tour', async (req, res) => {
+        try {
+            const { city, preferences } = req.body;
+
+            if (!city) {
+                return res.status(400).json({ error: 'City is required' });
+            }
+
+            // TODO: Replace mock data with Claude API call
+            const mockTour = {
+                tourName: `Historical ${preferences?.tourType === 'biking' ? 'Biking' : 'Walking'} Tour of ${city}`,
+                shortDescription: `A curated ${preferences?.tourType === 'biking' ? 'biking' : 'walking'} tour through ${city}'s most iconic historical sites`,
+                tourType: preferences?.tourType === 'biking' ? 'Bike' : 'Hike',
+                estimatedDuration: `${preferences?.duration || 3} hours`,
+                distanceKm: preferences?.tourType === 'biking' ? 12.5 : 4.2,
+                generatedBy: 'ai',
+                stops: [
+                    {
+                        order: 1,
+                        name: 'Hagia Sophia',
+                        description: 'A masterpiece of Byzantine architecture, originally built as a cathedral in 537 AD before becoming a mosque and now a museum.',
+                        x: 41.008545,
+                        y: 28.9770532,
+                        estimatedMinutes: 30,
+                    },
+                    {
+                        order: 2,
+                        name: 'Blue Mosque',
+                        description: 'The Sultan Ahmed Mosque, known for its stunning blue Iznik tiles and six minarets, is one of Istanbul\'s most iconic landmarks.',
+                        x: 41.0054,
+                        y: 28.9768,
+                        estimatedMinutes: 25,
+                    },
+                    {
+                        order: 3,
+                        name: 'Basilica Cistern',
+                        description: 'An ancient underground water reservoir built in the 6th century, featuring 336 marble columns and the famous Medusa head bases.',
+                        x: 41.0084,
+                        y: 28.9779,
+                        estimatedMinutes: 20,
+                    },
+                    {
+                        order: 4,
+                        name: 'Topkapi Palace',
+                        description: 'The opulent main residence of the Ottoman sultans for nearly 400 years, now a museum housing imperial collections.',
+                        x: 41.0115,
+                        y: 28.9834,
+                        estimatedMinutes: 45,
+                    },
+                    {
+                        order: 5,
+                        name: 'Grand Bazaar',
+                        description: 'One of the oldest and largest covered markets in the world, with over 4,000 shops across 61 covered streets.',
+                        x: 41.0107,
+                        y: 28.9680,
+                        estimatedMinutes: 30,
+                    },
+                ],
+            };
+
+            res.json(mockTour);
+        } catch (err) {
+            res.status(500).json({ error: 'Failed to generate tour' });
+        }
+    });
+
     app.listen(process.env.PORT);
 
 })
