@@ -1,5 +1,6 @@
 import * as Mongoose from 'mongoose';
 import { LocationModel } from '../models/Location';
+import { GeneratedTourModel } from '../models/GeneratedTour';
 
 let database: Mongoose.Connection;
 
@@ -29,6 +30,7 @@ export const connect = async () => {
 
     return {
         LocationModel,
+        GeneratedTourModel,
     };
 };
 

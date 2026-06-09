@@ -8,7 +8,9 @@
       "Bash(yarn add:*)",
       "Bash(rm:*)",
       "Bash(npx jest:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(cp -r /Users/doga.budak/Documents/piarcha/piarcha/piarch-a-interfaces/dist/* /Users/doga.budak/Documents/piarcha/piarcha/piarch-a-locations/node_modules/piarch-a-interfaces/dist/)",
+      "Bash(cd /Users/doga.budak/Documents/piarcha/piarcha/piarch-a-locations && rm -rf node_modules/piarch-a-interfaces && npm install 2>&1)"
     ],
     "deny": []
   }
