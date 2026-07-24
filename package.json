@@ -15,6 +15,7 @@
     "dotenv": "^16.0.0",
     "express": "4.16.0",
     "mongoose": "5.13.21",
+    "openai": "^6.49.0",
     "piarch-a-interfaces": "github:dogabudak/piarch-a-interfaces"
   },
   "devDependencies": {
