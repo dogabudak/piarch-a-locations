@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import {LocationModel} from "../models/Location";
 import {connect} from "../src/database";
-import {AttractionType} from "piarch-a-interfaces";
+import {AttractionType, TourType} from "piarch-a-interfaces";
 
 connect().then(async () => {
     await LocationModel.deleteMany({})
@@ -55,18 +55,18 @@ connect().then(async () => {
                         ],
                         "tours": [
                             {
-                                "name": "Historical Tour",
-                                "type": "Hike",
+                                "tourName": "Historical Tour",
+                                "tourType": TourType.Hike,
                                 "shortDescription": "Amazing tour"
                             },
                             {
-                                "name": "Detailed amazing tour",
-                                "type": "Bike",
+                                "tourName": "Detailed amazing tour",
+                                "tourType": TourType.Bike,
                                 "shortDescription": "even longer and more amazing tour"
                             },
                             {
-                                "name": "Bicycle tour",
-                                "type": "Trekking",
+                                "tourName": "Bicycle tour",
+                                "tourType": TourType.Trekking,
                                 "shortDescription": "small bike tour "
                             }
                         ]
@@ -129,18 +129,18 @@ connect().then(async () => {
                         ],
                         "tours": [
                             {
-                                "name": "Historical Tour",
-                                "type": "Hike",
+                                "tourName": "Historical Tour",
+                                "tourType": TourType.Hike,
                                 "shortDescription": "Amazing tour"
                             },
                             {
-                                "name": "Detailed amazing tour",
-                                "type": "Bike",
+                                "tourName": "Detailed amazing tour",
+                                "tourType": TourType.Bike,
                                 "shortDescription": "even longer and more amazing tour"
                             },
                             {
-                                "name": "Bicycle tour",
-                                "type": "Trekking",
+                                "tourName": "Bicycle tour",
+                                "tourType": TourType.Trekking,
                                 "shortDescription": "small bike tour "
                             }
                         ]

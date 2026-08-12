@@ -80,7 +80,11 @@ connect().then(()=>{
 
     app.get('/coordinates/:city', async (req, res) => {
         try {
-            const { city, language = 'en'} = req.params
+            const { city } = req.params
+            // Only 'en'/'tr' exist on the schema, and this value is interpolated
+            // into an aggregation path, so anything else falls back to 'en'.
+            const requested = String(req.query.language ?? 'en')
+            const language = requested === 'tr' ? 'tr' : 'en'
             // return coordinates and tours
             const result = await LocationModel.aggregate([
                 {
@@ -102,6 +106,8 @@ connect().then(()=>{
                         "description": `$cities.coordinates.description.${language}`,
                         "x": "$cities.coordinates.x",
                         "y": "$cities.coordinates.y",
+                        "type": "$cities.coordinates.type",
+                        "advertisement": "$cities.coordinates.advertisement",
                     }
                 }
             ]).exec()
