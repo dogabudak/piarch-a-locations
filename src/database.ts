@@ -1,4 +1,4 @@
-import * as Mongoose from 'mongoose';
+import Mongoose from 'mongoose';
 import { LocationModel } from '../models/Location';
 import { GeneratedTourModel } from '../models/GeneratedTour';
 

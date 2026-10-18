@@ -14,6 +14,7 @@ Location and tourism microservice for the Piarcha platform. Provides geographica
 ## Project Structure
 
 ```
+cluster.ts                  # Entry point: forks one index.ts worker per CPU core
 index.ts                    # Express app, all API route definitions
 src/
   database.ts              # MongoDB connection & initialization
@@ -53,6 +54,7 @@ The `Location` document in MongoDB stores:
 # Configure environment
 cp .env.template .env
 # Set MONGODB and PORT (default 3019)
+# Optional: WEB_CONCURRENCY sets the worker count (default: number of CPU cores)
 
 # Install and start
 npm install
@@ -64,6 +66,7 @@ npx ts-node seeder/initialSeeder.ts
 
 ## Key Design Decisions
 
+- The app runs in Node `cluster` mode: `cluster.ts` forks a worker per core, each running the full app (`index.ts`) on the shared port. Workers share no memory, so all shared state must live in MongoDB. Crashed workers are restarted after 1s.
 - `CountryCityService` is a singleton that loads country/city data from NPM packages at startup, keeping static geo data in memory.
 - MongoDB aggregation pipelines are used for coordinate queries (unwinding nested arrays by city).
 - Tour generation endpoint is mocked — intended to be replaced with Claude API integration for dynamic tour creation.

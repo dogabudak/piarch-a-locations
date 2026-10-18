@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { connect } from "./src/database";
 import {Availability, TourType} from "piarch-a-interfaces";
 
